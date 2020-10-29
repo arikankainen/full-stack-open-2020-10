@@ -33,10 +33,23 @@ const styles = StyleSheet.create({
 const LoginForm = ({ onSubmit }) => {
   return (
     <View style={styles.container}>
-      <FormikTextInput name="username" placeholder="Username" />
-      <FormikTextInput name="password" placeholder="Password" secureTextEntry />
-      <Button text="Sign in" onPress={onSubmit} />
+      <FormikTextInput testID="usernameField" name="username" placeholder="Username" />
+      <FormikTextInput
+        testID="passwordField"
+        name="password"
+        placeholder="Password"
+        secureTextEntry
+      />
+      <Button testID="submitButton" text="Sign in" onPress={onSubmit} />
     </View>
+  );
+};
+
+export const SignInContainer = ({ onSubmit }) => {
+  return (
+    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+      {({ handleSubmit }) => <LoginForm onSubmit={handleSubmit} />}
+    </Formik>
   );
 };
 
@@ -46,19 +59,10 @@ const SignIn = () => {
   const onSubmit = async values => {
     const { username, password } = values;
 
-    try {
-      const { data } = await signIn({ username, password });
-      console.log(data);
-    } catch (e) {
-      console.log(e);
-    }
+    await signIn({ username, password });
   };
 
-  return (
-    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-      {({ handleSubmit }) => <LoginForm onSubmit={handleSubmit} />}
-    </Formik>
-  );
+  return <SignInContainer onSubmit={onSubmit} />;
 };
 
 export default SignIn;

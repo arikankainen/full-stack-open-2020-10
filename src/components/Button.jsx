@@ -17,9 +17,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const Button = ({ text, onPress }) => {
+const Button = ({ text, onPress, ...props }) => {
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
+    <TouchableWithoutFeedback onPress={onPress} {...props}>
       <View style={styles.container}>
         <Text fontWeight="bold" style={styles.text}>
           {text}
