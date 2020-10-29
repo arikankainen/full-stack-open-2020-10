@@ -27,11 +27,7 @@ const AppBar = () => {
     apolloClient.resetStore();
   };
 
-  const SignOutTab = (
-    <Link component={AppBarTab} onPress={signOut}>
-      Sign out
-    </Link>
-  );
+  const SignOutTab = <AppBarTab onPress={signOut}>Sign out</AppBarTab>;
 
   const SignInTab = (
     <Link to="/signin" component={AppBarTab}>

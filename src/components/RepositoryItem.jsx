@@ -58,7 +58,9 @@ const styles = StyleSheet.create({
 const CountBox = ({ number, text }) => {
   return (
     <View style={styles.countContainer}>
-      <Text style={styles.topicText}>{truncateThousands(number)}</Text>
+      <Text testID={text} style={styles.topicText}>
+        {truncateThousands(number)}
+      </Text>
       <Text>{text}</Text>
     </View>
   );
@@ -67,7 +69,9 @@ const CountBox = ({ number, text }) => {
 const LanguageBox = ({ language }) => {
   return (
     <View style={styles.languageContainer}>
-      <Text style={styles.languageText}>{language}</Text>
+      <Text testID="language" style={styles.languageText}>
+        {language}
+      </Text>
     </View>
   );
 };
@@ -77,12 +81,18 @@ const RepositoryItem = ({ item }) => {
     <View style={styles.container}>
       <View style={styles.imageAndInfoContainer}>
         <View>
-          <Image style={styles.avatarImage} source={{ uri: item.ownerAvatarUrl }} />
+          <Image
+            testID="avatarImage"
+            style={styles.avatarImage}
+            source={{ uri: item.ownerAvatarUrl }}
+          />
         </View>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.topicText}>{item.fullName}</Text>
-          <Text>{item.description}</Text>
+          <Text testID="fullName" style={styles.topicText}>
+            {item.fullName}
+          </Text>
+          <Text testID="description">{item.description}</Text>
           <LanguageBox language={item.language} />
         </View>
       </View>
