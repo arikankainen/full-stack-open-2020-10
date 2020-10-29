@@ -8,18 +8,7 @@ import Text from './Text';
 import Button from './Button';
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.18,
-    shadowRadius: 1.0,
-    elevation: 1,
-    backgroundColor: 'white',
-  },
+  container: theme.whiteContainerWithShadow,
   imageAndInfoContainer: {
     flexDirection: 'row',
   },

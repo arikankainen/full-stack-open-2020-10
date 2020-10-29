@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 
 import { GET_REPOSITORY } from '../graphql/queries';
 
-const useRepository = id => {
+const useSingleRepository = id => {
   const [repository, setRepository] = useState();
 
   const { loading, data, error, refetch } = useQuery(GET_REPOSITORY, {
@@ -19,4 +19,4 @@ const useRepository = id => {
   return { repository, loading, error, refetch };
 };
 
-export default useRepository;
+export default useSingleRepository;
