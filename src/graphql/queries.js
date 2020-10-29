@@ -20,6 +20,24 @@ export const GET_REPOSITORIES = gql`
   }
 `;
 
+// TODO: fragments
+export const GET_REPOSITORY = gql`
+  query repository($id: ID!) {
+    repository(id: $id) {
+      id
+      ownerAvatarUrl
+      fullName
+      description
+      language
+      stargazersCount
+      forksCount
+      reviewCount
+      ratingAverage
+      url
+    }
+  }
+`;
+
 export const AUTHORIZED_USER = gql`
   query {
     authorizedUser {

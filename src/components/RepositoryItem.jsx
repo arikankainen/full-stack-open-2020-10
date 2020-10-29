@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
+import * as Linking from 'expo-linking';
+
 import theme from '../theme';
 import truncateThousands from '../utils/truncateThousands';
 import Text from './Text';
+import Button from './Button';
 
 const styles = StyleSheet.create({
   container: {
@@ -53,6 +56,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
+  buttonContainer: {
+    marginTop: 20,
+  },
 });
 
 const CountBox = ({ number, text }) => {
@@ -76,7 +82,16 @@ const LanguageBox = ({ language }) => {
   );
 };
 
-const RepositoryItem = ({ item }) => {
+const GitHubButton = ({ visible, url }) => {
+  if (!visible) return null;
+  return (
+    <View style={styles.buttonContainer}>
+      <Button text="Open in GitHub" onPress={() => Linking.openURL(url)} />
+    </View>
+  );
+};
+
+const RepositoryItem = ({ item, showUrl }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageAndInfoContainer}>
@@ -103,6 +118,8 @@ const RepositoryItem = ({ item }) => {
         <CountBox text="Reviews" number={item.reviewCount} />
         <CountBox text="Rating" number={item.ratingAverage} />
       </View>
+
+      <GitHubButton visible={showUrl} url={item.url} />
     </View>
   );
 };
