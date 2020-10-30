@@ -1,11 +1,13 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import * as yup from 'yup';
+import { useHistory } from 'react-router-native';
 
 import FormikTextInput from './FormikTextInput';
 import Button from './Button';
 import useSignIn from '../hooks/useSignIn';
+import theme from '../theme';
 
 const initialValues = {
   username: '',
@@ -13,26 +15,13 @@ const initialValues = {
 };
 
 const validationSchema = yup.object().shape({
-  username: yup
-    .string()
-    .min(3, 'Username must be at least 3 characters')
-    .required('Username is required'),
-  password: yup
-    .string()
-    .min(5, 'Password must be at least 5 characters')
-    .required('Password is required'),
-});
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    padding: 20,
-  },
+  username: yup.string().required('Username is required'),
+  password: yup.string().required('Password is required'),
 });
 
 const LoginForm = ({ onSubmit }) => {
   return (
-    <View style={styles.container}>
+    <View style={theme.whiteContainerWithShadow}>
       <FormikTextInput testID="usernameField" name="username" placeholder="Username" />
       <FormikTextInput
         testID="passwordField"
@@ -54,12 +43,14 @@ export const SignInContainer = ({ onSubmit }) => {
 };
 
 const SignIn = () => {
+  const history = useHistory();
   const [signIn] = useSignIn();
 
   const onSubmit = async values => {
     const { username, password } = values;
 
     await signIn({ username, password });
+    history.push('/');
   };
 
   return <SignInContainer onSubmit={onSubmit} />;

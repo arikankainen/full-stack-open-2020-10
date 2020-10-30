@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
-import { useHistory } from 'react-router-native';
 
 import { AUTHORIZE } from '../graphql/mutations';
 import AuthStorageContext from '../contexts/AuthStorageContext';
@@ -8,7 +7,6 @@ import AuthStorageContext from '../contexts/AuthStorageContext';
 const useSignIn = () => {
   const authStorage = useContext(AuthStorageContext);
   const apolloClient = useApolloClient();
-  const history = useHistory();
 
   const [mutate, result] = useMutation(AUTHORIZE, {
     onError: error => {
@@ -24,7 +22,6 @@ const useSignIn = () => {
     if (data && data.authorize) {
       await authStorage.setAccessToken(data.authorize.accessToken);
       apolloClient.resetStore();
-      history.push('/');
     }
 
     return result;

@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-native';
 import FormikTextInput from './FormikTextInput';
 import Button from './Button';
 import useCreateReview from '../hooks/useCreateReview';
+import theme from '../theme';
 
 const initialValues = {
   ownerName: '',
@@ -27,16 +28,9 @@ const validationSchema = yup.object().shape({
   review: yup.string(),
 });
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    padding: 20,
-  },
-});
-
 const CreateReviewForm = ({ onSubmit }) => {
   return (
-    <View style={styles.container}>
+    <View style={theme.whiteContainerWithShadow}>
       <FormikTextInput name="ownerName" placeholder="Repository owner name" />
       <FormikTextInput name="repositoryName" placeholder="Repository name" />
       <FormikTextInput name="rating" placeholder="Rating between 0 and 100" />
