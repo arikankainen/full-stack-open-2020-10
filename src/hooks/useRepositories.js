@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { GET_REPOSITORIES } from '../graphql/queries';
 import { repositorySort } from '../components/RepositorySortPicker';
 
-const useRepositories = sort => {
+const useRepositories = (search, sort) => {
   const [repositories, setRepositories] = useState();
 
   let variables;
@@ -12,6 +12,7 @@ const useRepositories = sort => {
   switch (sort) {
     case repositorySort.HIGHEST_RATED.value:
       variables = {
+        searchKeyword: search,
         orderBy: 'RATING_AVERAGE',
         orderDirection: 'DESC',
       };
@@ -19,6 +20,7 @@ const useRepositories = sort => {
 
     case repositorySort.LOWEST_RATED.value:
       variables = {
+        searchKeyword: search,
         orderBy: 'RATING_AVERAGE',
         orderDirection: 'ASC',
       };
@@ -26,6 +28,7 @@ const useRepositories = sort => {
 
     default:
       variables = {
+        searchKeyword: search,
         orderBy: 'CREATED_AT',
         orderDirection: 'DESC',
       };
