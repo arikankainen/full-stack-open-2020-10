@@ -1,17 +1,15 @@
-import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
 import { GET_REPOSITORIES } from '../graphql/queries';
 import { repositorySort } from '../components/RepositorySortPicker';
 
-const useRepositories = (search, sort) => {
-  const [repositories, setRepositories] = useState();
-
+const useRepositories = ({ search, sort, first }) => {
   let variables;
 
   switch (sort) {
     case repositorySort.HIGHEST_RATED.value:
       variables = {
+        first,
         searchKeyword: search,
         orderBy: 'RATING_AVERAGE',
         orderDirection: 'DESC',
@@ -20,6 +18,7 @@ const useRepositories = (search, sort) => {
 
     case repositorySort.LOWEST_RATED.value:
       variables = {
+        first,
         searchKeyword: search,
         orderBy: 'RATING_AVERAGE',
         orderDirection: 'ASC',
@@ -28,6 +27,7 @@ const useRepositories = (search, sort) => {
 
     default:
       variables = {
+        first,
         searchKeyword: search,
         orderBy: 'CREATED_AT',
         orderDirection: 'DESC',
@@ -35,17 +35,43 @@ const useRepositories = (search, sort) => {
       break;
   }
 
-  const { loading, data, error, refetch } = useQuery(GET_REPOSITORIES, {
+  const { loading, data, fetchMore, ...result } = useQuery(GET_REPOSITORIES, {
     variables,
     fetchPolicy: 'cache-and-network',
   });
 
-  useEffect(() => {
-    if (loading || !data || !data.repositories) return;
-    setRepositories(data.repositories);
-  }, [data, loading]);
+  const handleFetchMore = () => {
+    const canFetchMore = !loading && data && data.repositories.pageInfo.hasNextPage;
 
-  return { repositories, loading, error, refetch };
+    if (!canFetchMore) {
+      return;
+    }
+
+    fetchMore({
+      query: GET_REPOSITORIES,
+      variables: {
+        after: data.repositories.pageInfo.endCursor,
+        ...variables,
+      },
+      updateQuery: (previousResult, { fetchMoreResult }) => {
+        const nextResult = {
+          repositories: {
+            ...fetchMoreResult.repositories,
+            edges: [...previousResult.repositories.edges, ...fetchMoreResult.repositories.edges],
+          },
+        };
+
+        return nextResult;
+      },
+    });
+  };
+
+  return {
+    repositories: data ? data.repositories : undefined,
+    fetchMore: handleFetchMore,
+    loading,
+    ...result,
+  };
 };
 
 export default useRepositories;

@@ -28,11 +28,16 @@ const EmptyList = () => {
 
 const SingleRepository = () => {
   const { id } = useParams();
-  const { repository } = useSingleRepository(id);
+  const { repository, fetchMore } = useSingleRepository({ id, first: 10 });
 
   const reviews = repository ? repository.reviews.edges.map(edge => edge.node) : [];
 
   if (!repository) return <Spinner />;
+
+  const handleEndReach = () => {
+    console.log('fechmore');
+    fetchMore();
+  };
 
   return (
     <FlatList
@@ -42,6 +47,8 @@ const SingleRepository = () => {
       ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
       ItemSeparatorComponent={ListItemSeparator}
       ListEmptyComponent={EmptyList}
+      onEndReached={handleEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };

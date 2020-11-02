@@ -1,8 +1,20 @@
 import { gql } from 'apollo-boost';
 
 export const GET_REPOSITORIES = gql`
-  query repositories($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection, $searchKeyword: String) {
-    repositories(orderBy: $orderBy, orderDirection: $orderDirection, searchKeyword: $searchKeyword) {
+  query repositories(
+    $orderBy: AllRepositoriesOrderBy
+    $orderDirection: OrderDirection
+    $searchKeyword: String
+    $after: String
+    $first: Int
+  ) {
+    repositories(
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+      searchKeyword: $searchKeyword
+      after: $after
+      first: $first
+    ) {
       edges {
         node {
           id
@@ -15,6 +27,13 @@ export const GET_REPOSITORIES = gql`
           reviewCount
           ratingAverage
         }
+        cursor
+      }
+      pageInfo {
+        endCursor
+        startCursor
+        totalCount
+        hasNextPage
       }
     }
   }
@@ -22,7 +41,7 @@ export const GET_REPOSITORIES = gql`
 
 // TODO: fragments
 export const GET_REPOSITORY = gql`
-  query repository($id: ID!) {
+  query repository($id: ID!, $after: String, $first: Int) {
     repository(id: $id) {
       id
       ownerAvatarUrl
@@ -34,7 +53,7 @@ export const GET_REPOSITORY = gql`
       reviewCount
       ratingAverage
       url
-      reviews {
+      reviews(first: $first, after: $after) {
         edges {
           node {
             id
@@ -46,6 +65,13 @@ export const GET_REPOSITORY = gql`
               username
             }
           }
+          cursor
+        }
+        pageInfo {
+          endCursor
+          startCursor
+          totalCount
+          hasNextPage
         }
       }
     }

@@ -34,7 +34,7 @@ export class RepositoryListContainer extends React.Component {
   };
 
   render() {
-    const { repositories } = this.props;
+    const { repositories, onEndReach } = this.props;
     const repositoryNodes = repositories ? repositories.edges.map(edge => edge.node) : [];
 
     return (
@@ -44,6 +44,8 @@ export class RepositoryListContainer extends React.Component {
         ItemSeparatorComponent={ListItemSeparator}
         renderItem={this.renderItem}
         ListHeaderComponent={this.renderHeader}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
       />
     );
   }
@@ -55,7 +57,7 @@ const RepositoryList = () => {
   const [search, setSearch] = useState('');
   const [searchDebounced] = useDebounce(search, 500);
   const [sort, setSort] = useState(repositorySort.LATEST.value);
-  const { repositories } = useRepositories(searchDebounced, sort);
+  const { repositories, fetchMore } = useRepositories({ search: searchDebounced, sort, first: 10 });
 
   const handleSearchChanged = value => {
     setSearch(value);
@@ -66,9 +68,14 @@ const RepositoryList = () => {
     else setSort(value);
   };
 
+  const handleEndReach = () => {
+    fetchMore();
+  };
+
   return (
     <RepositoryListContainerWithRouter
       repositories={repositories}
+      onEndReach={handleEndReach}
       onSearchChanged={handleSearchChanged}
       search={search}
       onSortChanged={handleSortChanged}
