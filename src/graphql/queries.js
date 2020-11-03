@@ -87,6 +87,7 @@ export const AUTHORIZED_USER = gql`
         edges {
           node {
             repository {
+              id
               fullName
             }
             id

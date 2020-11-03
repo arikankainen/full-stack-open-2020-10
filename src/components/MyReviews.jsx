@@ -8,7 +8,7 @@ import ListItemSeparator from './ListItemSeparator';
 import NoReviews from './NoReviews';
 
 const MyReviews = () => {
-  const { authorizedUser, fetchMore } = useMyReviews({ first: 10 });
+  const { authorizedUser, fetchMore, refetch } = useMyReviews({ first: 10 });
 
   const reviews = authorizedUser ? authorizedUser.reviews.edges.map(edge => edge.node) : [];
 
@@ -21,7 +21,7 @@ const MyReviews = () => {
   return (
     <FlatList
       data={reviews}
-      renderItem={({ item }) => <ReviewItem review={item} isMyReview={true} />}
+      renderItem={({ item }) => <ReviewItem review={item} isMyReview={true} refetch={refetch} />}
       keyExtractor={({ id }) => id}
       ItemSeparatorComponent={ListItemSeparator}
       ListEmptyComponent={NoReviews}

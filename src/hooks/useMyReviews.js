@@ -8,7 +8,7 @@ const useMyReviews = ({ first }) => {
     includeReviews: true,
   };
 
-  const { loading, data, fetchMore, ...result } = useQuery(AUTHORIZED_USER, {
+  const { loading, data, fetchMore, refetch, ...result } = useQuery(AUTHORIZED_USER, {
     variables,
     fetchPolicy: 'cache-and-network',
   });
@@ -49,6 +49,7 @@ const useMyReviews = ({ first }) => {
     authorizedUser: data ? data.authorizedUser : undefined,
     fetchMore: handleFetchMore,
     loading,
+    refetch,
     ...result,
   };
 };

@@ -11,16 +11,19 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 15,
     borderRadius: 5,
+    flexGrow: 1,
   },
   text: {
     color: 'white',
   },
 });
 
-const Button = ({ text, onPress, ...props }) => {
+const Button = ({ text, warning, onPress, ...props }) => {
+  const buttonStyle = [styles.container, warning && { backgroundColor: theme.colors.error }];
+
   return (
     <TouchableWithoutFeedback onPress={onPress} {...props}>
-      <View style={styles.container}>
+      <View style={buttonStyle}>
         <Text fontWeight="bold" style={styles.text}>
           {text}
         </Text>
