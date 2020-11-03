@@ -7,21 +7,13 @@ import ReviewItem from './ReviewItem';
 import useSingleRepository from '../hooks/useSingleRepository';
 import Spinner from './Spinner';
 import ListItemSeparator from './ListItemSeparator';
-import Text from './Text';
+import NoReviews from './NoReviews';
 
 const RepositoryInfo = ({ repository }) => {
   return (
     <View>
       <RepositoryItem item={repository} showUrl={true} />
       <ListItemSeparator />
-    </View>
-  );
-};
-
-const EmptyList = () => {
-  return (
-    <View>
-      <Text align="center">No reviews</Text>
     </View>
   );
 };
@@ -35,7 +27,6 @@ const SingleRepository = () => {
   if (!repository) return <Spinner />;
 
   const handleEndReach = () => {
-    console.log('fechmore');
     fetchMore();
   };
 
@@ -46,7 +37,7 @@ const SingleRepository = () => {
       keyExtractor={({ id }) => id}
       ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
       ItemSeparatorComponent={ListItemSeparator}
-      ListEmptyComponent={EmptyList}
+      ListEmptyComponent={NoReviews}
       onEndReached={handleEndReach}
       onEndReachedThreshold={0.5}
     />
