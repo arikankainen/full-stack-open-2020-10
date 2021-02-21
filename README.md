@@ -1,3 +1,2 @@
-# full-stack-open-2020-10
-
-palautusrepositorio (osa10)
+# Full Stack open 2020
+Part 10
